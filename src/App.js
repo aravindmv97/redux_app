@@ -1,26 +1,44 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import './App.css';
+import Form from './Form';
+
+const initialState = {
+  data: {
+    name: '',
+    email: ''
+  }
+};
+
+function reducer(state = initialState, action) {
+  switch (action.type) {
+    case 'NAME':
+      state.data.name = action.value;
+      return state;
+
+    case 'EMAIL':
+      state.data.email = action.value;
+      return state;
+
+    case 'SUBMIT':
+      alert('A name was submitted: ' + JSON.stringify(this.state.data));
+      action.value.preventDefault();
+      return state;
+
+    default:
+      return state;
+  }
+}
+
+const store = createStore(reducer);
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+        <Form />
+      </Provider>
     );
   }
 }
